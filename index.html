@@ -21,7 +21,7 @@
       --lover-purple: #c084fc;
       --glass-bg: rgba(255, 255, 255, 0.45);
       --glass-border: rgba(255, 255, 255, 0.65);
-      --shadow-romantic: 0 8px 32px 0 rgba(236, 72, 153, 0.2);
+      --shadow-romantic: 0 8px 32px 0 rgba(236, 72, 153, 0.25);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
@@ -44,6 +44,7 @@
     h1, h2, h3 { font-family: 'Playfair Display', serif; }
     .cursive { font-family: 'Dancing Script', cursive; }
 
+    /* Canvas Sparkles & Hearts floating always */
     #heartCanvas {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       pointer-events: none; z-index: 1;
@@ -95,85 +96,93 @@
       display: inline-block; margin-top: 25px; padding: 15px 35px;
       background: linear-gradient(45deg, var(--soft-rose), var(--lover-purple));
       color: white; text-decoration: none; font-weight: 600; border-radius: 50px;
+      box-shadow: 0 4px 15px rgba(219, 39, 119, 0.3); transition: transform 0.2s;
     }
+    .btn-romantic:active { transform: scale(0.95); }
 
     section { padding: 90px 20px; max-width: 1100px; margin: 0 auto; position: relative; z-index: 2; }
-    .section-title { text-align: center; font-size: 2.8rem; color: #831843; margin-bottom: 40px; }
+    .section-title { text-align: center; font-size: 2.8rem; color: #831843; margin-bottom: 30px; }
 
-    .polaroid-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 30px; padding: 10px;
-    }
-
-    .polaroid {
-      background: white; padding: 15px 15px 25px 15px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-radius: 4px;
-      transform: rotate(calc(-3deg + 6deg * var(--r)));
-    }
-
-    .polaroid img { width: 100%; height: 220px; object-fit: cover; border-radius: 2px; }
-    .polaroid-caption { text-align: center; font-family: 'Dancing Script', cursive; font-size: 1.4rem; margin-top: 15px; }
-
-    /* --- 3D FLIP CARDS STYLING --- */
-    .love-cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-      perspective: 1000px;
-    }
-
-    .flip-card {
-      background-color: transparent;
-      height: 220px;
-      cursor: pointer;
-    }
-
-    .flip-card-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-      transform-style: preserve-3d;
-    }
-
-    .flip-card.flipped .flip-card-inner {
-      transform: rotateY(180deg);
-    }
-
-    .flip-card-front, .flip-card-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-      border-radius: 20px;
-      padding: 25px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+    /* TOGETHER SINCE LIVE COUNTER */
+    .timer-container {
+      background: var(--glass-bg); backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border); border-radius: 24px;
+      padding: 25px; margin: 30px auto; text-align: center; max-width: 600px;
       box-shadow: var(--shadow-romantic);
-      border: 1px solid var(--glass-border);
     }
-
-    .flip-card-front {
-      background: var(--glass-bg);
-      backdrop-filter: blur(12px);
+    .timer-boxes { display: flex; justify-content: center; gap: 15px; margin-top: 15px; flex-wrap: wrap; }
+    .time-box {
+      background: white; border-radius: 12px; padding: 10px 15px; min-width: 80px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
+    .time-box .num { font-size: 1.8rem; font-weight: 700; color: var(--deep-rose); }
+    .time-box .label { font-size: 0.75rem; text-transform: uppercase; color: #701a75; }
 
-    .flip-card-front .icon { font-size: 2.5rem; margin-bottom: 12px; }
-    .flip-card-front h3 { font-size: 1.4rem; color: #4a044e; }
-    .flip-hint { margin-top: 10px; font-size: 0.8rem; color: var(--deep-rose); opacity: 0.8; }
+    /* POLAROIDS */
+    .polaroid-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px; padding: 10px;
+    }
+    .polaroid {
+      background: white; padding: 12px 12px 20px 12px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-radius: 4px;
+      transform: rotate(calc(-3deg + 6deg * var(--r))); cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .polaroid:hover { transform: scale(1.05) rotate(0deg); z-index: 5; }
+    .polaroid img { width: 100%; height: 200px; object-fit: cover; border-radius: 2px; }
+    .polaroid-caption { text-align: center; font-family: 'Dancing Script', cursive; font-size: 1.3rem; margin-top: 10px; }
 
+    /* 3D FLIP CARDS */
+    .love-cards-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px; perspective: 1000px;
+    }
+    .flip-card { background-color: transparent; height: 210px; cursor: pointer; }
+    .flip-card-inner {
+      position: relative; width: 100%; height: 100%; text-align: center;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d;
+    }
+    .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+    .flip-card-front, .flip-card-back {
+      position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden;
+      backface-visibility: hidden; border-radius: 20px; padding: 25px;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      box-shadow: var(--shadow-romantic); border: 1px solid var(--glass-border);
+    }
+    .flip-card-front { background: var(--glass-bg); backdrop-filter: blur(12px); }
+    .flip-card-front h3 { font-size: 1.5rem; color: #4a044e; }
+    .flip-hint { margin-top: 12px; font-size: 0.85rem; color: var(--deep-rose); font-weight: 600; }
     .flip-card-back {
-      background: linear-gradient(135deg, rgba(244, 114, 182, 0.85), rgba(192, 132, 252, 0.85));
-      backdrop-filter: blur(12px);
-      color: white;
-      transform: rotateY(180deg);
+      background: linear-gradient(135deg, rgba(244, 114, 182, 0.9), rgba(192, 132, 252, 0.9));
+      backdrop-filter: blur(12px); color: white; transform: rotateY(180deg);
     }
+    .flip-card-back h4 { font-size: 1.3rem; margin-bottom: 8px; font-family: 'Playfair Display', serif; }
+    .flip-card-back p { font-size: 0.95rem; line-height: 1.4; }
 
-    .flip-card-back p { font-size: 1rem; line-height: 1.5; font-weight: 500; }
+    /* QUIZ SECTION */
+    .quiz-card {
+      background: var(--glass-bg); backdrop-filter: blur(12px);
+      border-radius: 24px; padding: 40px; border: 1px solid var(--glass-border);
+      text-align: center; max-width: 600px; margin: 0 auto; box-shadow: var(--shadow-romantic);
+    }
+    .quiz-options { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 20px; }
+    .quiz-btn {
+      background: white; border: 1px solid var(--soft-rose); color: #4a044e;
+      padding: 12px 20px; border-radius: 30px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    }
+    .quiz-btn:hover { background: var(--pastel-pink); }
+    .star-reveal { display: none; margin-top: 25px; animation: fadeIn 1s ease; }
+    .star-reveal img { width: 220px; height: 220px; border-radius: 50%; object-fit: cover; border: 4px solid var(--soft-rose); box-shadow: 0 8px 25px rgba(219, 39, 119, 0.4); }
+
+    /* WHEEL OF LOVE */
+    .wheel-container { text-align: center; position: relative; max-width: 380px; margin: 0 auto; }
+    .wheel-wrapper { position: relative; width: 300px; height: 300px; margin: 20px auto; }
+    #wheelCanvas { width: 100%; height: 100%; border-radius: 50%; border: 6px solid white; box-shadow: var(--shadow-romantic); transition: transform 4s cubic-bezier(0.15, 0.99, 0.15, 0.99); }
+    .wheel-pointer {
+      position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+      font-size: 2rem; z-index: 10; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
 
     .letter-box {
       background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px);
@@ -187,18 +196,17 @@
       border: 1px solid rgba(192, 132, 252, 0.5); margin: 40px auto;
     }
 
-    .gift-game { text-align: center; padding: 40px 20px; }
-    .gift-box { font-size: 5rem; cursor: pointer; display: inline-block; animation: bounce 2s infinite; }
-    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-
+    /* LIGHTBOX MODAL */
     .modal {
-      display: none; position: fixed; inset: 0; background: rgba(74, 4, 78, 0.6);
-      backdrop-filter: blur(8px); z-index: 10000; justify-content: center; align-items: center; padding: 20px;
+      display: none; position: fixed; inset: 0; background: rgba(74, 4, 78, 0.75);
+      backdrop-filter: blur(10px); z-index: 10000; justify-content: center; align-items: center; padding: 20px;
     }
-    .modal-content { background: white; padding: 40px; border-radius: 30px; max-width: 500px; width: 100%; text-align: center; position: relative; }
-    .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; cursor: pointer; }
+    .modal-content { background: white; padding: 30px; border-radius: 30px; max-width: 500px; width: 100%; text-align: center; position: relative; }
+    .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; cursor: pointer; color: #831843; }
 
-    footer { text-align: center; padding: 60px 20px; background: rgba(255, 255, 255, 0.3); }
+    footer { text-align: center; padding: 90px 20px 60px 20px; background: rgba(255, 255, 255, 0.3); }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
@@ -215,7 +223,8 @@
 
   <div id="mainContent" style="display: none;">
 
-    <section class="hero">
+    <!-- HERO SECTION -->
+    <section class="hero" data-flower="🌹">
       <div class="hero-slideshow" id="heroSlideshow"></div>
       <div class="glass-card">
         <p class="cursive" style="font-size: 2rem; color: var(--deep-rose);">Happy Girlfriend Day</p>
@@ -224,7 +233,7 @@
           "Can I go where you go? Can we always be this close forever and ever?"
         </p>
 
-        <!-- YOUTUBE MUSIC EMBED -->
+        <!-- MUSIC PLAYER -->
         <div class="music-card">
           <iframe 
             width="100%" 
@@ -237,95 +246,135 @@
           </iframe>
         </div>
 
+        <!-- TOGETHER SINCE LIVE TIMER -->
+        <div class="timer-container">
+          <h3 class="cursive" style="font-size: 1.8rem; color: var(--deep-rose);">Together Since March 8, 2025 ❤️</h3>
+          <div class="timer-boxes">
+            <div class="time-box"><div class="num" id="days">0</div><div class="label">Days</div></div>
+            <div class="time-box"><div class="num" id="hours">0</div><div class="label">Hours</div></div>
+            <div class="time-box"><div class="num" id="mins">0</div><div class="label">Mins</div></div>
+            <div class="time-box"><div class="num" id="secs">0</div><div class="label">Secs</div></div>
+          </div>
+        </div>
+
         <a href="#memories" class="btn-romantic">Begin Our Story ❤️</a>
       </div>
     </section>
 
-    <section id="memories">
+    <!-- CAPTURED MOMENTS -->
+    <section id="memories" data-flower="🌸">
       <h2 class="section-title cursive">Captured Moments 📸</h2>
+      <p style="text-align: center; margin-top: -20px; margin-bottom: 25px; color: #701a75;">Tap any memory to view full size ✨</p>
       <div class="polaroid-grid" id="polaroidGrid"></div>
     </section>
 
+    <!-- QUIZ SECTION -->
+    <section data-flower="⭐">
+      <div class="quiz-card">
+        <h2 class="cursive" style="font-size: 2.2rem; color: #831843;">A Quick Question... 🌌</h2>
+        <p style="margin-top: 10px; font-size: 1.1rem;">What is the single brightest star in the entire universe?</p>
+        
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="wrongQuiz(this)">Sirius 🌟</button>
+          <button class="quiz-btn" onclick="wrongQuiz(this)">The Sun ☀️</button>
+          <button class="quiz-btn" onclick="correctQuiz()">Haru ✨</button>
+          <button class="quiz-btn" onclick="wrongQuiz(this)">North Star 🧭</button>
+        </div>
+
+        <div class="star-reveal" id="starReveal">
+          <img id="starPic" src="./images/1.jpeg" alt="Brightest Star Haru" onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500&q=80'">
+          <h3 class="cursive" style="font-size: 2rem; color: var(--deep-rose); margin-top: 15px;">Correct! It's You, My Princess! ✨</h3>
+          <p style="color: #701a75;">Nothing in the galaxy outshines your smile.</p>
+        </div>
+      </div>
+    </section>
+
     <!-- FLIP CARDS SECTION -->
-    <section>
+    <section data-flower="🌺">
       <h2 class="section-title">Things I Love About You 💖</h2>
-      <p style="text-align: center; margin-top: -30px; margin-bottom: 30px; color: #701a75;">Tap each card to reveal why you mean so much to me ✨</p>
+      <p style="text-align: center; margin-top: -20px; margin-bottom: 30px; color: #701a75;">Tap each card to flip and unlock the secret surprise! ✨</p>
       
       <div class="love-cards-grid">
         
-        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card" onclick="flipCardWithConfetti(this)">
           <div class="flip-card-inner">
             <div class="flip-card-front">
-              <div class="icon">🧠</div>
-              <h3>Emotional Intelligence</h3>
+              <div style="font-size: 2.5rem; margin-bottom: 10px;">🎁</div>
+              <h3>Reason #1</h3>
               <div class="flip-hint">Tap to flip ➔</div>
             </div>
             <div class="flip-card-back">
+              <h4>Emotional Intelligence</h4>
               <p>The deep, intuitive way you understand feelings and bring calm clarity to every conversation.</p>
             </div>
           </div>
         </div>
 
-        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card" onclick="flipCardWithConfetti(this)">
           <div class="flip-card-inner">
             <div class="flip-card-front">
-              <div class="icon">🌸</div>
-              <h3>Kindness</h3>
+              <div style="font-size: 2.5rem; margin-bottom: 10px;">🌸</div>
+              <h3>Reason #2</h3>
               <div class="flip-hint">Tap to flip ➔</div>
             </div>
             <div class="flip-card-back">
+              <h4>Kindness</h4>
               <p>The soft, effortless grace with which you care for the people and world around you.</p>
             </div>
           </div>
         </div>
 
-        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card" onclick="flipCardWithConfetti(this)">
           <div class="flip-card-inner">
             <div class="flip-card-front">
-              <div class="icon">🤝</div>
-              <h3>Humanity</h3>
+              <div style="font-size: 2.5rem; margin-bottom: 10px;">🤝</div>
+              <h3>Reason #3</h3>
               <div class="flip-hint">Tap to flip ➔</div>
             </div>
             <div class="flip-card-back">
+              <h4>Humanity</h4>
               <p>Your genuine compassion, humility, and the grounded way you stay true to yourself.</p>
             </div>
           </div>
         </div>
 
-        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card" onclick="flipCardWithConfetti(this)">
           <div class="flip-card-inner">
             <div class="flip-card-front">
-              <div class="icon">✨</div>
-              <h3>Grace & Poise</h3>
+              <div style="font-size: 2.5rem; margin-bottom: 10px;">✨</div>
+              <h3>Reason #4</h3>
               <div class="flip-hint">Tap to flip ➔</div>
             </div>
             <div class="flip-card-back">
+              <h4>Grace & Poise</h4>
               <p>How effortlessly you carry elegance, warmth, and strength in everything you do.</p>
             </div>
           </div>
         </div>
 
-        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card" onclick="flipCardWithConfetti(this)">
           <div class="flip-card-inner">
             <div class="flip-card-front">
-              <div class="icon">🤗</div>
-              <h3>Warmth & Empathy</h3>
+              <div style="font-size: 2.5rem; margin-bottom: 10px;">🤗</div>
+              <h3>Reason #5</h3>
               <div class="flip-hint">Tap to flip ➔</div>
             </div>
             <div class="flip-card-back">
+              <h4>Warmth & Empathy</h4>
               <p>Your heart makes everyone feel safe, heard, valued, and genuinely loved.</p>
             </div>
           </div>
         </div>
 
-        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card" onclick="flipCardWithConfetti(this)">
           <div class="flip-card-inner">
             <div class="flip-card-front">
-              <div class="icon">💎</div>
-              <h3>Pure Soul</h3>
+              <div style="font-size: 2.5rem; margin-bottom: 10px;">💎</div>
+              <h3>Reason #6</h3>
               <div class="flip-hint">Tap to flip ➔</div>
             </div>
             <div class="flip-card-back">
+              <h4>Pure Soul</h4>
               <p>Simply put: there is no one else like you. You are my favorite person in the world.</p>
             </div>
           </div>
@@ -334,13 +383,27 @@
       </div>
     </section>
 
+    <!-- WHEEL OF LOVE -->
+    <section data-flower="🌻">
+      <h2 class="section-title cursive">Wheel of Love 🎡</h2>
+      <p style="text-align: center; margin-top: -20px; margin-bottom: 25px; color: #701a75;">Spin the wheel to claim your reward!</p>
+
+      <div class="wheel-container">
+        <div class="wheel-pointer">👇</div>
+        <div class="wheel-wrapper">
+          <canvas id="wheelCanvas" width="300" height="300"></canvas>
+        </div>
+        <button class="btn-romantic" onclick="spinWheel()">🎡 Spin the Wheel!</button>
+      </div>
+    </section>
+
     <!-- AUTO-TYPING LETTER SECTION -->
-    <section id="letterSection">
+    <section id="letterSection" data-flower="🪷">
       <h2 class="section-title cursive">A Letter For My Princess 💌</h2>
       <div class="letter-box"><div id="typewriterText"></div></div>
     </section>
 
-    <section>
+    <section data-flower="🦋">
       <div class="swift-section">
         <div style="font-size: 2.5rem; margin-bottom: 15px;">🦋 ✨ 💎</div>
         <p class="swift-quote">"Ladies and gentlemen, will you please stand?<br>With every guitar string scar on my hand...<br>I take this magnetic force of a man to be my lover."</p>
@@ -348,26 +411,22 @@
       </div>
     </section>
 
-    <section class="gift-game">
-      <h2 class="section-title cursive">Open Your Surprise 🎁</h2>
-      <p style="margin-bottom: 20px;">Tap the gift box below to unwrap your special present!</p>
-      <div class="gift-box" onclick="openSurprise()">🎁</div>
-    </section>
-
+    <!-- CINEMATIC ENDING FOOTER -->
     <footer id="footerSection">
-      <h2 style="font-size: 2.2rem; color: #831843;" class="cursive">Out of everyone in the world...</h2>
-      <h1 style="font-size: 3rem; margin: 15px 0; color: #4a044e;">I’d still choose you. ❤️</h1>
-      <p style="font-size: 1.3rem; font-weight: 600; color: var(--deep-rose);">Happy Girlfriend Day, Haru! 🌸</p>
-      <p style="margin-top: 10px; font-style: italic; color: #701a75;">Love, Kshiteej</p>
+      <h2 style="font-size: 2.5rem; color: #831843;" class="cursive">Out of everyone in the world...</h2>
+      <h1 style="font-size: 3.5rem; margin: 15px 0; color: #4a044e; letter-spacing: 1px;">I’d still choose you. ❤️</h1>
+      <p style="font-size: 1.4rem; font-weight: 600; color: var(--deep-rose);">Happy Girlfriend Day, Haru! 🌸</p>
+      <p style="margin-top: 15px; font-style: italic; color: #701a75;">Forever & Always, Kshiteej</p>
     </footer>
 
   </div>
 
+  <!-- POPUP / LIGHTBOX MODAL -->
   <div class="modal" id="popupModal">
     <div class="modal-content">
       <span class="close-modal" onclick="closeModal()">&times;</span>
-      <h2 id="modalTitle" style="color: var(--deep-rose); margin-bottom: 15px;">❤️ Secret Unlocked ❤️</h2>
-      <p id="modalBody" style="line-height: 1.8; color: #4a044e;"></p>
+      <h2 id="modalTitle" style="color: var(--deep-rose); margin-bottom: 15px;">❤️</h2>
+      <div id="modalBody" style="line-height: 1.8; color: #4a044e;"></div>
     </div>
   </div>
 
@@ -410,18 +469,45 @@
       const captions = ["That glowing smile ✨", "My favorite adventure 🌸", "Lover era moments 💖", "Forever & Always 🌹", "Every moment with you 💫", "Princess vibes 👑"];
       images.forEach((img, i) => {
         const rot = (Math.random() * 6 - 3).toFixed(1);
+        const cap = captions[i % captions.length];
         grid.innerHTML += `
-          <div class="polaroid" style="--r: ${rot};">
+          <div class="polaroid" style="--r: ${rot};" onclick="openLightbox('${img}', '${cap}')">
             <img src="${img}" alt="Photo" onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500&q=80'">
-            <div class="polaroid-caption">${captions[i % captions.length]}</div>
+            <div class="polaroid-caption">${cap}</div>
           </div>
         `;
       });
+
+      // Set quiz star picture to first image
+      if (images.length > 0) document.getElementById('starPic').src = images[0];
+    }
+
+    function openLightbox(imgUrl, caption) {
+      showModal(`✨ ${caption} ✨`, `<img src="${imgUrl}" style="width:100%; max-height: 60vh; object-fit: contain; border-radius: 12px; margin-bottom: 10px;">`);
     }
 
     loadAllImages();
 
-    /* 2. LOADER OPEN LOGIC */
+    /* 2. TOGETHER SINCE MARCH 8, 2025 LIVE TIMER */
+    const startDate = new Date('2025-03-08T00:00:00');
+    function updateTimer() {
+      const now = new Date();
+      const diff = now - startDate;
+
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const m = Math.floor((diff / 1000 / 60) % 60);
+      const s = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('days').innerText = d;
+      document.getElementById('hours').innerText = h;
+      document.getElementById('mins').innerText = m;
+      document.getElementById('secs').innerText = s;
+    }
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    /* 3. LOADER OPEN LOGIC */
     const loader = document.getElementById("loader");
     let opened = false;
 
@@ -435,14 +521,14 @@
       setTimeout(() => {
         loader.style.display = "none";
         document.getElementById("mainContent").style.display = "block";
-        initScrollObserver();
+        initScrollObservers();
       }, 1000);
     }
 
     loader.addEventListener("click", openWebsite);
     loader.addEventListener("touchstart", openWebsite, { passive: true });
 
-    /* 3. SLIDESHOW TIMER */
+    /* 4. SLIDESHOW TIMER */
     function initSlideshow() {
       const slides = document.querySelectorAll('.slide');
       let current = 0;
@@ -455,7 +541,88 @@
       }
     }
 
-    /* 4. AUTO-TYPE ON SCROLL OBSERVER */
+    /* 5. QUIZ INTERACTIONS */
+    function wrongQuiz(btn) {
+      btn.style.background = '#fef2f2';
+      btn.style.borderColor = '#ef4444';
+      btn.innerText = 'Nope! Try again 😜';
+    }
+    function correctQuiz() {
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+      document.getElementById('starReveal').style.display = 'block';
+    }
+
+    /* 6. FLIP CARD WITH CONFETTI */
+    function flipCardWithConfetti(card) {
+      if (!card.classList.contains('flipped')) {
+        confetti({ particleCount: 40, spread: 60, origin: { y: 0.7 } });
+      }
+      card.classList.toggle('flipped');
+    }
+
+    /* 7. WHEEL OF LOVE */
+    const wheelCanvas = document.getElementById('wheelCanvas');
+    const wCtx = wheelCanvas.getContext('2d');
+    const options = [
+      "Kiss Coupon 😘",
+      "Unlimited Hugs 🫂",
+      "Movie Night 🎬",
+      "Ice Cream Date 🍨",
+      "Breakfast in Bed ☕",
+      "Surprise Gift 🎁"
+    ];
+    const colors = ["#f472b6", "#c084fc", "#fbcfe8", "#e9d5ff", "#f43f5e", "#a855f7"];
+    let currentRotation = 0;
+    let isSpinning = false;
+
+    function drawWheel() {
+      const numOptions = options.length;
+      const arcSize = (2 * Math.PI) / numOptions;
+      
+      for (let i = 0; i < numOptions; i++) {
+        const angle = i * arcSize;
+        wCtx.beginPath();
+        wCtx.fillStyle = colors[i];
+        wCtx.moveTo(150, 150);
+        wCtx.arc(150, 150, 150, angle, angle + arcSize);
+        wCtx.fill();
+
+        // Text
+        wCtx.save();
+        wCtx.translate(150, 150);
+        wCtx.rotate(angle + arcSize / 2);
+        wCtx.textAlign = "right";
+        wCtx.fillStyle = "white";
+        wCtx.font = "bold 13px Poppins";
+        wCtx.fillText(options[i], 135, 5);
+        wCtx.restore();
+      }
+    }
+    drawWheel();
+
+    function spinWheel() {
+      if (isSpinning) return;
+      isSpinning = true;
+
+      const extraRounds = 5 + Math.floor(Math.random() * 5);
+      const randomDegrees = Math.floor(Math.random() * 360);
+      const totalDegrees = extraRounds * 360 + randomDegrees;
+
+      currentRotation += totalDegrees;
+      wheelCanvas.style.transform = `rotate(${currentRotation}deg)`;
+
+      setTimeout(() => {
+        isSpinning = false;
+        const actualDeg = (360 - (currentRotation % 360) + 270) % 360;
+        const index = Math.floor(actualDeg / (360 / options.length));
+        const winner = options[index];
+
+        confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
+        showModal("🎉 Wheel Prize Unlocked! 🎉", `<h3 style="font-size:2rem; color:var(--deep-rose); margin:15px 0;">${winner}</h3><p>Redeemable anytime by Haru! ❤️</p>`);
+      }, 4000);
+    }
+
+    /* 8. AUTO-TYPE ON SCROLL OBSERVER */
     const letterText = `Dear Haru,\n\nFrom the moment you entered my life, everything got brighter, sweeter, and infinitely more beautiful. You bring so much light into my world just by being yourself.\n\nThank you for every shared laugh, every sweet text, every quiet moment, and every memory we've built together. You are my best friend, my safe place, and my favorite person.\n\nHappy Girlfriend Day, my princess. Here's to us, today and always.\n\nForever Yours,\nKshiteej ❤️`;
     let typeIndex = 0;
     let typewriterStarted = false;
@@ -463,7 +630,6 @@
     function startTypewriter() {
       if (typewriterStarted) return;
       typewriterStarted = true;
-      
       const container = document.getElementById('typewriterText');
       function type() {
         if (typeIndex < letterText.length) {
@@ -476,7 +642,31 @@
       type();
     }
 
-    function initScrollObserver() {
+    /* 9. SECTION FLOWER SHOWERS */
+    function triggerFlowerShower(symbol) {
+      for (let i = 0; i < 20; i++) {
+        const flower = document.createElement('div');
+        flower.innerText = symbol;
+        flower.style.position = 'fixed';
+        flower.style.top = '-50px';
+        flower.style.left = Math.random() * 100 + 'vw';
+        flower.style.fontSize = (Math.random() * 20 + 20) + 'px';
+        flower.style.pointerEvents = 'none';
+        flower.style.zIndex = '999';
+        flower.style.transition = 'transform 3s linear, opacity 3s linear';
+        document.body.appendChild(flower);
+
+        setTimeout(() => {
+          flower.style.transform = `translateY(${window.innerHeight + 100}px) rotate(${Math.random() * 360}deg)`;
+          flower.style.opacity = '0';
+        }, 50);
+
+        setTimeout(() => flower.remove(), 3200);
+      }
+    }
+
+    function initScrollObservers() {
+      // Letter Observer
       const letterSection = document.getElementById('letterSection');
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -486,11 +676,22 @@
           }
         });
       }, { threshold: 0.3 });
-
       if (letterSection) observer.observe(letterSection);
+
+      // Section Flower Observer
+      const sections = document.querySelectorAll('section[data-flower]');
+      const flowerObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const flower = entry.target.getAttribute('data-flower');
+            triggerFlowerShower(flower);
+          }
+        });
+      }, { threshold: 0.4 });
+      sections.forEach(sec => flowerObserver.observe(sec));
     }
 
-    /* 5. CANVAS SPARKLES */
+    /* 10. CANVAS SPARKLES & FLOATING HEARTS ALWAYS */
     const canvas = document.getElementById('heartCanvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
@@ -504,7 +705,7 @@
         this.y = canvas.height + Math.random() * 100;
         this.size = Math.random() * 18 + 10;
         this.speedY = Math.random() * 1.5 + 0.5;
-        this.symbol = ['❤️', '✨', '🌸', '💖', '🦋'][Math.floor(Math.random() * 5)];
+        this.symbol = ['❤️', '✨', '🌸', '💖', '👑', '🦋'][Math.floor(Math.random() * 6)];
         this.opacity = Math.random() * 0.7 + 0.3;
       }
       update() {
@@ -517,7 +718,7 @@
         ctx.fillText(this.symbol, this.x, this.y);
       }
     }
-    for (let i = 0; i < 35; i++) particles.push(new Particle());
+    for (let i = 0; i < 40; i++) particles.push(new Particle());
     function animateParticles() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       particles.forEach(p => { p.update(); p.draw(); });
@@ -525,42 +726,33 @@
     }
     animateParticles();
 
-    /* 6. EASTER EGG & GIFT MODAL */
-    let dblTapCount = 0, lastTap = 0;
-    document.addEventListener('touchend', () => {
-      let now = new Date().getTime();
-      if (now - lastTap < 300 && now - lastTap > 0) registerTap();
-      lastTap = now;
-    });
-    document.addEventListener('dblclick', registerTap);
-    function registerTap() {
-      dblTapCount++;
-      if (dblTapCount >= 5) {
-        showModal("❤️ Secret Unlocked ❤️", "Dear Haru,<br><br>No matter what happens,<br>I'll always choose you.<br><br><b>Love,<br>Kshiteej</b>");
-        dblTapCount = 0;
-      }
-    }
-
-    function openSurprise() {
-      confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
-      showModal("🎁 Surprise Gift!", "A coupon for <b>1x Infinite Hugs & Kisses</b> + <b>A Date Night of your choice</b>! 💖<br><br>Redeemable anytime by Haru!");
-    }
-
-    function showModal(title, text) {
+    /* 11. MODAL UTILS */
+    function showModal(title, bodyHtml) {
       document.getElementById('modalTitle').innerHTML = title;
-      document.getElementById('modalBody').innerHTML = text;
+      document.getElementById('modalBody').innerHTML = bodyHtml;
       document.getElementById('popupModal').style.display = 'flex';
     }
     function closeModal() { document.getElementById('popupModal').style.display = 'none'; }
 
-    /* 7. CONFETTI FINALE */
+    /* 12. CINEMATIC ENDING FIREWORKS */
     let confettiTriggered = false;
     window.addEventListener('scroll', () => {
       const footer = document.getElementById('footerSection');
       if (!footer) return;
       if (footer.getBoundingClientRect().top < window.innerHeight && !confettiTriggered) {
         confettiTriggered = true;
-        confetti({ particleCount: 150, spread: 100, origin: { y: 0.8 }, colors: ['#f472b6', '#c084fc', '#fef08a', '#fbcfe8'] });
+        
+        // Continuous Fireworks burst for finale
+        const duration = 3 * 1000;
+        const animationEnd = Date.now() + duration;
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+        const interval = setInterval(function() {
+          const timeLeft = animationEnd - Date.now();
+          if (timeLeft <= 0) return clearInterval(interval);
+          const particleCount = 50 * (timeLeft / duration);
+          confetti({ ...defaults, particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } });
+        }, 250);
       }
     });
   </script>
