@@ -247,7 +247,7 @@
   </div>
 
   <script>
-    /* 1. HARDCODED IMAGE FALLBACK + GITHUB API (UNTOUCHED) */
+    /* 1. DYNAMIC GITHUB IMAGES FETCH */
     const knownImages = [
       './images/1.jpeg', './images/2.jpeg', './images/3.jpeg', './images/4.jpeg',
       './images/5.jpeg', './images/6.jpeg', './images/7.jpeg', './images/8.jpeg',
@@ -266,14 +266,9 @@
         if (Array.isArray(data)) {
           images = data.filter(f => /\.(png|jpe?g|webp|gif)$/i.test(f.name)).map(f => `./images/${f.name}`);
         }
-      } catch (e) {
-        console.log("GitHub API limited, using direct array");
-      }
+      } catch (e) {}
 
-      if (!images || images.length === 0) {
-        images = knownImages;
-      }
-
+      if (!images || images.length === 0) images = knownImages;
       renderImages(images);
     }
 
@@ -320,22 +315,44 @@
 
     loadAllImages();
 
-    /* 2. GUARANTEED AUDIO ENGINE */
-    const bgMusic = new Audio("./lover.mp3");
+    /* 2. DYNAMIC GITHUB MUSIC FETCH & PLAY ENGINE */
+    let bgMusic = new Audio();
     bgMusic.loop = true;
-    bgMusic.preload = "auto";
     let isPlaying = false;
 
-    function forcePlayMusic() {
-      if (!isPlaying) {
-        bgMusic.play().then(() => {
-          document.getElementById('musicIcon').textContent = '⏸️';
-          document.getElementById('musicText').textContent = 'Pause Lover';
-          isPlaying = true;
-        }).catch(err => {
-          console.log("Audio waiting for user gesture:", err);
-        });
+    async function fetchAndPlayMusic() {
+      try {
+        // Fetch files at root level to find any audio file dynamically
+        const res = await fetch('https://api.github.com/repos/iphonestorage2024001-hub/HK_2_Try/contents/');
+        const data = await res.json();
+        
+        if (Array.isArray(data)) {
+          const audioFile = data.find(f => /\.(mp3|m4a|wav|ogg)$/i.test(f.name));
+          if (audioFile) {
+            // Set source directly from raw GitHub path or relative filename
+            bgMusic.src = audioFile.download_url || `./${audioFile.name}`;
+          }
+        }
+      } catch (e) {
+        console.log("GitHub API limited, defaulting to local lover.mp3");
       }
+
+      // Fallback relative path if API fails
+      if (!bgMusic.src) {
+        bgMusic.src = './lover.mp3';
+      }
+
+      startPlayback();
+    }
+
+    function startPlayback() {
+      bgMusic.play().then(() => {
+        document.getElementById('musicIcon').textContent = '⏸️';
+        document.getElementById('musicText').textContent = 'Pause Lover';
+        isPlaying = true;
+      }).catch(err => {
+        console.log("Browser waiting for user tap:", err);
+      });
     }
 
     function toggleAudio() {
@@ -345,13 +362,17 @@
         document.getElementById('musicText').textContent = 'Play Lover';
         isPlaying = false;
       } else {
-        forcePlayMusic();
+        if (!bgMusic.src) {
+          fetchAndPlayMusic();
+        } else {
+          startPlayback();
+        }
       }
     }
 
-    // Opens loader & triggers music playback
+    // Trigger dynamic fetch + play on FIRST interaction anywhere or loader tap
     document.getElementById('loader').addEventListener('pointerdown', function() {
-      forcePlayMusic();
+      fetchAndPlayMusic();
 
       const loader = document.getElementById('loader');
       loader.style.opacity = '0';
@@ -362,9 +383,8 @@
       }, 1000);
     });
 
-    // Global pointer fallback (guarantees audio triggers on ANY first touch anywhere)
     window.addEventListener("pointerdown", () => {
-      forcePlayMusic();
+      fetchAndPlayMusic();
     }, { once: true });
 
     /* 3. SLIDESHOW TIMER */
