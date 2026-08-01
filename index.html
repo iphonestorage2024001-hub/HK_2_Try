@@ -49,26 +49,13 @@
       pointer-events: none; z-index: 1;
     }
 
-    /* Floating Music Bar at Top */
-    .music-container {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      z-index: 10000;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--glass-border);
-      padding: 6px 12px;
-      border-radius: 30px;
-      box-shadow: var(--shadow-romantic);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .music-container audio {
-      height: 32px;
-      max-width: 200px;
+    .music-btn {
+      position: fixed; top: 20px; right: 20px; z-index: 1000;
+      background: var(--glass-bg); backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border); padding: 12px 20px;
+      border-radius: 50px; cursor: pointer; font-weight: 600;
+      color: var(--deep-rose); box-shadow: var(--shadow-romantic);
+      display: flex; align-items: center; gap: 8px; border: none;
     }
 
     #loader {
@@ -175,19 +162,10 @@
 
   <canvas id="heartCanvas"></canvas>
 
-  <!-- NATIVE AUDIO PLAYER (BYPASSES MOBILES' AUTOPLAY BLOCK) -->
-  <div class="music-container">
-  <span style="font-size: 1.2rem;">🎵</span>
-  <audio id="bgMusic" controls loop preload="auto" playsinline>
-    <!-- Direct public CDN link for Lover -->
-    <source src="https://ia801503.us.archive.org/15/items/taylor-swift-lover-album/03%20Lover.mp3" type="audio/mpeg">
-    <!-- Local fallbacks -->
-    <source src="lover.mp3" type="audio/mpeg">
-  </audio>
-</div>
+  <button class="music-btn" id="musicToggle">🎵</button>
 
   <div id="loader">
-    <div class="envelope-wrapper" id="envelopeBtn">
+    <div class="envelope-wrapper">
       <div class="envelope-icon">💌</div>
       <h2 style="font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: #831843;">For Haru ❤️</h2>
       <p style="margin-top: 10px; color: #701a75;">Tap anywhere to open your letter</p>
@@ -335,22 +313,48 @@
 
     loadAllImages();
 
-    /* 2. AUDIO & ENVELOPE HANDLER */
-    const audio = document.getElementById('bgMusic');
+    /* 2. AUDIO PLAYBACK VIA DIRECT GITHUB RAW LINK */
+    const musicBtn = document.getElementById("musicToggle");
+    const loader = document.getElementById("loader");
 
-    function triggerAudio() {
-      audio.play().catch(e => console.log("Direct play required via native controls:", e));
-    }
+    // Sourced directly from your GitHub repository raw media file
+    const music = new Audio("https://raw.githubusercontent.com/iphonestorage2024001-hub/HK_2_Try/main/lover.mp3");
+    music.loop = true;
 
-    document.getElementById('envelopeBtn').addEventListener('click', function() {
-      triggerAudio();
-      const loader = document.getElementById('loader');
-      loader.style.opacity = '0';
+    let opened = false;
+
+    function openWebsite() {
+      if (opened) return;
+      opened = true;
+
+      music.play().then(() => {
+        musicBtn.innerHTML = "⏸";
+      }).catch((e) => {
+        console.log("Audio play error:", e);
+      });
+
+      loader.style.transition = "opacity 1s ease";
+      loader.style.opacity = "0";
+
       setTimeout(() => {
-        loader.style.display = 'none';
-        document.getElementById('mainContent').style.display = 'block';
+        loader.style.display = "none";
+        document.getElementById("mainContent").style.display = "block";
         startTypewriter();
       }, 1000);
+    }
+
+    loader.addEventListener("click", openWebsite);
+    loader.addEventListener("touchstart", openWebsite, { passive: true });
+
+    musicBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (music.paused) {
+        music.play();
+        musicBtn.innerHTML = "⏸";
+      } else {
+        music.pause();
+        musicBtn.innerHTML = "🎵";
+      }
     });
 
     /* 3. SLIDESHOW TIMER */
