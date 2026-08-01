@@ -468,5 +468,16 @@
       }
     });
   </script>
+  <script>
+    // ... all your other script code ...
+
+    // 🎵 INDEPENDENT AUDIO LOADER
+    const bgMusic = new Audio("./Taylor_Swift_-_Lover_(mp3.pm).mp3");
+    bgMusic.loop = true;
+    window.addEventListener("pointerdown", () => { bgMusic.play().catch(() => {}); }, { once: true });
+  </script>
+</body>
+</html>
+
 </body>
 </html>
