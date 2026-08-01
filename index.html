@@ -49,13 +49,26 @@
       pointer-events: none; z-index: 1;
     }
 
-    .music-btn {
-      position: fixed; top: 20px; right: 20px; z-index: 1000;
-      background: var(--glass-bg); backdrop-filter: blur(10px);
-      border: 1px solid var(--glass-border); padding: 12px 20px;
-      border-radius: 50px; cursor: pointer; font-weight: 600;
-      color: var(--deep-rose); box-shadow: var(--shadow-romantic);
-      display: flex; align-items: center; gap: 8px; border: none;
+    /* Floating Music Bar at Top */
+    .music-container {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 10000;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      padding: 6px 12px;
+      border-radius: 30px;
+      box-shadow: var(--shadow-romantic);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .music-container audio {
+      height: 32px;
+      max-width: 200px;
     }
 
     #loader {
@@ -162,16 +175,15 @@
 
   <canvas id="heartCanvas"></canvas>
 
-  <!-- DIRECT HTML AUDIO TAG -->
-  <audio id="bgMusic" loop preload="auto" playsinline>
-    <source src="lover.mp3" type="audio/mpeg">
-    <source src="./lover.mp3" type="audio/mpeg">
-    <source src="Taylor_Swift_-_Lover_(mp3.pm).mp3" type="audio/mpeg">
-  </audio>
-
-  <button class="music-btn" id="musicToggle">
-    <span id="musicIcon">🎵</span> <span id="musicText">Play Lover</span>
-  </button>
+  <!-- NATIVE AUDIO PLAYER (BYPASSES MOBILES' AUTOPLAY BLOCK) -->
+  <div class="music-container">
+    <span style="font-size: 1.2rem;">🎵</span>
+    <audio id="bgMusic" controls loop preload="auto" playsinline>
+      <source src="lover.mp3" type="audio/mpeg">
+      <source src="./lover.mp3" type="audio/mpeg">
+      <source src="Taylor_Swift_-_Lover_(mp3.pm).mp3" type="audio/mpeg">
+    </audio>
+  </div>
 
   <div id="loader">
     <div class="envelope-wrapper" id="envelopeBtn">
@@ -322,36 +334,19 @@
 
     loadAllImages();
 
-    /* 2. DIRECT DOM AUDIO CONTROLLER */
+    /* 2. AUDIO & ENVELOPE HANDLER */
     const audio = document.getElementById('bgMusic');
-    const musicBtn = document.getElementById('musicToggle');
-    const musicIcon = document.getElementById('musicIcon');
-    const musicText = document.getElementById('musicText');
 
-    function startMusic() {
-      audio.play().then(() => {
-        musicIcon.textContent = '⏸️';
-        musicText.textContent = 'Pause Lover';
-      }).catch(err => {
-        console.log("Autoplay blocked until tap:", err);
-      });
+    function triggerAudio() {
+      audio.play().catch(e => console.log("Direct play required via native controls:", e));
     }
 
-    musicBtn.addEventListener('click', () => {
-      if (audio.paused) {
-        startMusic();
-      } else {
-        audio.pause();
-        musicIcon.textContent = '🎵';
-        musicText.textContent = 'Play Lover';
-      }
-    });
-
-    document.getElementById('loader').addEventListener('click', () => {
-      startMusic();
-      document.getElementById('loader').style.opacity = '0';
+    document.getElementById('envelopeBtn').addEventListener('click', function() {
+      triggerAudio();
+      const loader = document.getElementById('loader');
+      loader.style.opacity = '0';
       setTimeout(() => {
-        document.getElementById('loader').style.display = 'none';
+        loader.style.display = 'none';
         document.getElementById('mainContent').style.display = 'block';
         startTypewriter();
       }, 1000);
