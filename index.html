@@ -55,7 +55,7 @@
       border: 1px solid var(--glass-border); padding: 12px 20px;
       border-radius: 50px; cursor: pointer; font-weight: 600;
       color: var(--deep-rose); box-shadow: var(--shadow-romantic);
-      display: flex; align-items: center; gap: 8px;
+      display: flex; align-items: center; gap: 8px; border: none;
     }
 
     #loader {
@@ -162,7 +162,14 @@
 
   <canvas id="heartCanvas"></canvas>
 
-  <button class="music-btn" id="musicToggle" onclick="toggleAudio()">
+  <!-- DIRECT HTML AUDIO TAG -->
+  <audio id="bgMusic" loop preload="auto" playsinline>
+    <source src="lover.mp3" type="audio/mpeg">
+    <source src="./lover.mp3" type="audio/mpeg">
+    <source src="Taylor_Swift_-_Lover_(mp3.pm).mp3" type="audio/mpeg">
+  </audio>
+
+  <button class="music-btn" id="musicToggle">
     <span id="musicIcon">🎵</span> <span id="musicText">Play Lover</span>
   </button>
 
@@ -315,77 +322,40 @@
 
     loadAllImages();
 
-    /* 2. DYNAMIC GITHUB MUSIC FETCH & PLAY ENGINE */
-    let bgMusic = new Audio();
-    bgMusic.loop = true;
-    let isPlaying = false;
+    /* 2. DIRECT DOM AUDIO CONTROLLER */
+    const audio = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicToggle');
+    const musicIcon = document.getElementById('musicIcon');
+    const musicText = document.getElementById('musicText');
 
-    async function fetchAndPlayMusic() {
-      try {
-        // Fetch files at root level to find any audio file dynamically
-        const res = await fetch('https://api.github.com/repos/iphonestorage2024001-hub/HK_2_Try/contents/');
-        const data = await res.json();
-        
-        if (Array.isArray(data)) {
-          const audioFile = data.find(f => /\.(mp3|m4a|wav|ogg)$/i.test(f.name));
-          if (audioFile) {
-            // Set source directly from raw GitHub path or relative filename
-            bgMusic.src = audioFile.download_url || `./${audioFile.name}`;
-          }
-        }
-      } catch (e) {
-        console.log("GitHub API limited, defaulting to local lover.mp3");
-      }
-
-      // Fallback relative path if API fails
-      if (!bgMusic.src) {
-        bgMusic.src = './lover.mp3';
-      }
-
-      startPlayback();
-    }
-
-    function startPlayback() {
-      bgMusic.play().then(() => {
-        document.getElementById('musicIcon').textContent = '⏸️';
-        document.getElementById('musicText').textContent = 'Pause Lover';
-        isPlaying = true;
+    function startMusic() {
+      audio.play().then(() => {
+        musicIcon.textContent = '⏸️';
+        musicText.textContent = 'Pause Lover';
       }).catch(err => {
-        console.log("Browser waiting for user tap:", err);
+        console.log("Autoplay blocked until tap:", err);
       });
     }
 
-    function toggleAudio() {
-      if (isPlaying) {
-        bgMusic.pause();
-        document.getElementById('musicIcon').textContent = '🎵';
-        document.getElementById('musicText').textContent = 'Play Lover';
-        isPlaying = false;
+    musicBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        startMusic();
       } else {
-        if (!bgMusic.src) {
-          fetchAndPlayMusic();
-        } else {
-          startPlayback();
-        }
+        audio.pause();
+        musicIcon.textContent = '🎵';
+        musicText.textContent = 'Play Lover';
       }
-    }
+    });
 
-    // Trigger dynamic fetch + play on FIRST interaction anywhere or loader tap
-    document.getElementById('loader').addEventListener('pointerdown', function() {
-      fetchAndPlayMusic();
-
-      const loader = document.getElementById('loader');
-      loader.style.opacity = '0';
+    document.getElementById('loader').addEventListener('click', () => {
+      startMusic();
+      document.getElementById('loader').style.opacity = '0';
       setTimeout(() => {
-        loader.style.display = 'none';
+        document.getElementById('loader').style.display = 'none';
         document.getElementById('mainContent').style.display = 'block';
         startTypewriter();
       }, 1000);
     });
-
-    window.addEventListener("pointerdown", () => {
-      fetchAndPlayMusic();
-    }, { once: true });
 
     /* 3. SLIDESHOW TIMER */
     function initSlideshow() {
