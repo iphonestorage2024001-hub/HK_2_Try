@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audio Sanity Test</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; text-align: center; background: #1e1e2e; color: #fff; }
+    button { padding: 15px 25px; font-size: 1.2rem; border-radius: 8px; border: none; cursor: pointer; margin: 10px; }
+    .status { margin-top: 20px; font-weight: bold; padding: 10px; border-radius: 5px; }
+    .success { background: #2e7d32; }
+    .error { background: #c62828; }
+  </style>
+</head>
+<body>
+
+  <h1>🎵 Audio Sanity Test</h1>
+  <p>Tap a button below to test candidate local paths directly on your device:</p>
+
+  <div id="buttons"></div>
+  <div id="log" class="status" style="background: #333;">Awaiting test...</div>
+
+  <script>
+    // List of candidate local paths in your repo
+    const candidates = [
+      "lover.mp3",
+      "./lover.mp3",
+      "assets/music/Taylor_Swift_-_Lover_(mp3.pm).mp3",
+      "./assets/music/Taylor_Swift_-_Lover_(mp3.pm).mp3",
+      "images/lover.mp3"
+    ];
+
+    const btnContainer = document.getElementById("buttons");
+    const log = document.getElementById("log");
+
+    candidates.forEach((path) => {
+      const btn = document.createElement("button");
+      btn.textContent = "Test: " + path;
+      btn.onclick = () => testPath(path);
+      btnContainer.appendChild(btn);
+    });
+
+    function testPath(path) {
+      log.className = "status";
+      log.style.background = "#333";
+      log.textContent = "Testing path: " + path + " ...";
+
+      const testAudio = new Audio(path);
+      
+      testAudio.play()
+        .then(() => {
+          log.className = "status success";
+          log.innerHTML = "✅ SUCCESS! Playing audio from:<br><code>" + path + "</code>";
+        })
+        .catch((err) => {
+          log.className = "status error";
+          log.innerHTML = "❌ FAILED for: <code>" + path + "</code><br>Error: " + err.message;
+        });
+    }
+  </script>
+
+</body>
+</html>
