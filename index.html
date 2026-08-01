@@ -5,12 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>For Haru ❤️ | Happy Girlfriend Day</title>
   
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  
-  <!-- Canvas Confetti Library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
@@ -313,10 +310,11 @@
 
     loadAllImages();
 
-    /* 2. DIRECT LOCAL AUDIO PLAYBACK */
+    /* 2. STRICT OFFLINE AUDIO PLAYBACK */
     const musicBtn = document.getElementById("musicToggle");
     const loader = document.getElementById("loader");
 
+    // Local relative file reference
     const music = new Audio("./lover.mp3");
     music.loop = true;
 
@@ -329,7 +327,7 @@
       music.play().then(() => {
         musicBtn.innerHTML = "⏸";
       }).catch((e) => {
-        console.log("Audio play error:", e);
+        console.log("Offline Audio Error:", e);
       });
 
       loader.style.transition = "opacity 1s ease";
