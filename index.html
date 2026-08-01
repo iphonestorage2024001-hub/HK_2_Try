@@ -49,24 +49,45 @@
       pointer-events: none; z-index: 1;
     }
 
-    /* REALISTIC SVG PETAL STYLING */
+    /* REALISTIC DIVERSE PETALS & FLOWERS */
     .petal {
       position: fixed;
-      top: -40px;
+      top: -50px;
       pointer-events: none;
       z-index: 9999;
-      animation: fallAndFlutter 4s linear forwards;
+      animation: fallAndFlutter 4.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     }
 
     @keyframes fallAndFlutter {
       0% {
-        transform: translateY(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+        transform: translateY(0) translateX(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
         opacity: 1;
       }
+      50% {
+        transform: translateY(50vh) translateX(30px) rotateX(180deg) rotateY(90deg) rotateZ(180deg);
+      }
       100% {
-        transform: translateY(105vh) rotateX(360deg) rotateY(180deg) rotateZ(360deg);
+        transform: translateY(105vh) translateX(-20px) rotateX(360deg) rotateY(180deg) rotateZ(360deg);
         opacity: 0;
       }
+    }
+
+    /* FLOATING BUTTERFLIES */
+    .butterfly {
+      position: fixed;
+      pointer-events: none;
+      z-index: 999;
+      font-size: 1.6rem;
+      animation: butterflyFly 8s ease-in-out infinite alternate;
+      filter: drop-shadow(0 4px 8px rgba(219, 39, 119, 0.3));
+    }
+
+    @keyframes butterflyFly {
+      0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+      25% { transform: translate(60px, -80px) scale(1.1) rotate(15deg); }
+      50% { transform: translate(-40px, -150px) scale(0.9) rotate(-10deg); }
+      75% { transform: translate(80px, -220px) scale(1.05) rotate(20deg); }
+      100% { transform: translate(0, -300px) scale(1) rotate(0deg); }
     }
 
     #loader {
@@ -244,7 +265,7 @@
   <div id="mainContent" style="display: none;">
 
     <!-- HERO SECTION -->
-    <section class="hero" data-petal="pink">
+    <section class="hero" data-petal="sakura">
       <div class="hero-slideshow" id="heroSlideshow"></div>
       <div class="glass-card">
         <p class="cursive" style="font-size: 2rem; color: var(--deep-rose);">Happy Girlfriend Day</p>
@@ -288,8 +309,8 @@
       <div class="polaroid-grid" id="polaroidGrid"></div>
     </section>
 
-    <!-- QUIZ SECTION WITH 4 REAL STARS -->
-    <section data-petal="purple">
+    <!-- QUIZ SECTION -->
+    <section data-petal="mix">
       <div class="quiz-card">
         <h2 class="cursive" style="font-size: 2.2rem; color: #831843;">A Quick Astronomy Question... 🌌</h2>
         <p style="margin-top: 10px; font-size: 1.1rem; color: #4a044e;">What is officially the single brightest star in the entire universe?</p>
@@ -310,7 +331,7 @@
     </section>
 
     <!-- FLIP CARDS SECTION -->
-    <section data-petal="pink">
+    <section data-petal="lavender">
       <h2 class="section-title">Things I Love About You 💖</h2>
       <p style="text-align: center; margin-top: -20px; margin-bottom: 30px; color: #701a75;">Tap each card to flip and unlock the secret surprise! ✨</p>
       
@@ -404,7 +425,7 @@
     </section>
 
     <!-- WHEEL OF LOVE -->
-    <section data-petal="rose">
+    <section data-petal="buttercup">
       <h2 class="section-title cursive">Wheel of Love 🎡</h2>
       <p style="text-align: center; margin-top: -20px; margin-bottom: 25px; color: #701a75;">Spin the wheel to claim your reward!</p>
 
@@ -418,12 +439,12 @@
     </section>
 
     <!-- AUTO-TYPING LETTER SECTION -->
-    <section id="letterSection" data-petal="purple">
+    <section id="letterSection" data-petal="sakura">
       <h2 class="section-title cursive">A Letter For My Princess 💌</h2>
       <div class="letter-box"><div id="typewriterText"></div></div>
     </section>
 
-    <section data-petal="pink">
+    <section data-petal="mix">
       <div class="swift-section">
         <div style="font-size: 2.5rem; margin-bottom: 15px;">🦋 ✨ 💎</div>
         <p class="swift-quote">"Ladies and gentlemen, will you please stand?<br>With every guitar string scar on my hand...<br>I take this magnetic force of a man to be my lover."</p>
@@ -451,7 +472,7 @@
   </div>
 
   <script>
-    /* 1. DYNAMIC GITHUB IMAGES FETCH */
+    /* 1. DYNAMIC GITHUB IMAGES FETCH & 26 UNIQUE CAPTIONS */
     const knownImages = [
       './images/1.jpeg', './images/2.jpeg', './images/3.jpeg', './images/4.jpeg',
       './images/5.jpeg', './images/6.jpeg', './images/7.jpeg', './images/8.jpeg',
@@ -460,6 +481,16 @@
       './images/17.jpg', './images/18.jpg', './images/19.jpg', './images/20.jpg',
       './images/21.jpg', './images/22.jpg', './images/23.jpg', './images/24.jpg',
       './images/25.jpg', './images/26.jpg'
+    ];
+
+    const uniqueCaptions = [
+      "That glowing smile ✨", "My favorite adventure 🌸", "Lover era moments 💖", "Forever & Always 🌹", 
+      "Every moment with you 💫", "Princess vibes 👑", "Pure happiness 💕", "My safest place 🏡",
+      "Cutest laughter ever 🥺", "Sunset magic with you 🌅", "My heart’s favorite 💘", "Unmatched grace 🕊️",
+      "Making memories 📸", "Simply breathtaking ✨", "Forever my girl ❤️", "Radiant soul 🌟",
+      "Sweetest eyes 👁️💖", "My peace & comfort ☕", "My whole world 🌎", "Looking gorgeous as always 👸",
+      "In love with this smile 😊", "Dreamy vibes ☁️✨", "My favorite person 💑", "Pure perfection 💎",
+      "Endless love 💖", "Chosen one forever 💍"
     ];
 
     async function loadAllImages() {
@@ -486,10 +517,9 @@
 
       const grid = document.getElementById('polaroidGrid');
       grid.innerHTML = '';
-      const captions = ["That glowing smile ✨", "My favorite adventure 🌸", "Lover era moments 💖", "Forever & Always 🌹", "Every moment with you 💫", "Princess vibes 👑"];
       images.forEach((img, i) => {
         const rot = (Math.random() * 6 - 3).toFixed(1);
-        const cap = captions[i % captions.length];
+        const cap = uniqueCaptions[i] || `Precious moment #${i+1} ❤️`;
         grid.innerHTML += `
           <div class="polaroid" style="--r: ${rot};" onclick="openLightbox('${img}', '${cap}')">
             <img src="${img}" alt="Photo" onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500&q=80'">
@@ -541,6 +571,7 @@
         loader.style.display = "none";
         document.getElementById("mainContent").style.display = "block";
         initScrollObservers();
+        initButterflies();
       }, 1000);
     }
 
@@ -562,7 +593,6 @@
 
     /* 5. ASTRONOMY QUIZ TRICK INTERACTION */
     function handleStarAnswer(btn) {
-      // Mark all buttons deactivated
       document.querySelectorAll('.quiz-btn').forEach(b => {
         b.disabled = true;
         b.style.opacity = '0.6';
@@ -574,7 +604,6 @@
       btn.innerText = '❌ Wrong answer!';
 
       setTimeout(() => {
-        // Explode Confetti & Fireworks
         confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
         document.getElementById('starReveal').style.display = 'block';
         document.getElementById('starReveal').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -670,31 +699,46 @@
       type();
     }
 
-    /* 9. REALISTIC SVG FLOWER PETAL SHOWERS */
-    function triggerPetalShower(colorType) {
-      const petalColors = {
-        pink: '#f472b6',
-        rose: '#db2777',
-        purple: '#c084fc'
-      };
-      const chosenColor = petalColors[colorType] || '#f472b6';
+    /* 9. REALISTIC MULTI-TYPE SVG FLOWER SHOWERS */
+    const svgFlowerTemplates = {
+      sakura: `<svg width="24" height="28" viewBox="0 0 30 42"><path d="M15 0C25 10 30 25 15 42C0 25 5 10 15 0Z" fill="#f472b6" fill-opacity="0.85"/></svg>`,
+      rose: `<svg width="22" height="26" viewBox="0 0 30 40"><path d="M15 0C28 8 28 28 15 40C2 28 2 8 15 0Z" fill="#db2777" fill-opacity="0.85"/></svg>`,
+      lavender: `<svg width="18" height="24" viewBox="0 0 20 30"><ellipse cx="10" cy="15" rx="8" ry="14" fill="#c084fc" fill-opacity="0.85"/></svg>`,
+      buttercup: `<svg width="22" height="22" viewBox="0 0 30 30"><circle cx="15" cy="15" r="12" fill="#fde047" fill-opacity="0.85"/></svg>`,
+      mix: `<svg width="24" height="26" viewBox="0 0 30 35"><path d="M15 0C26 12 26 24 15 35C4 24 4 12 15 0Z" fill="#a855f7" fill-opacity="0.85"/></svg>`
+    };
 
-      for (let i = 0; i < 22; i++) {
+    function triggerPetalShower(typeKey) {
+      const numPetals = 45; // Increased density!
+      for (let i = 0; i < numPetals; i++) {
         const petal = document.createElement('div');
         petal.className = 'petal';
         petal.style.left = Math.random() * 100 + 'vw';
-        petal.style.animationDuration = (Math.random() * 2 + 3) + 's';
-        petal.style.animationDelay = (Math.random() * 0.8) + 's';
+        petal.style.animationDuration = (Math.random() * 2.5 + 3.5) + 's';
+        petal.style.animationDelay = (Math.random() * 1.2) + 's';
 
-        const size = Math.random() * 15 + 15;
-        petal.innerHTML = `
-          <svg width="${size}" height="${size * 1.4}" viewBox="0 0 30 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15 0C25 10 30 25 15 42C0 25 5 10 15 0Z" fill="${chosenColor}" fill-opacity="0.75"/>
-          </svg>
-        `;
+        const keys = Object.keys(svgFlowerTemplates);
+        const selectedType = (typeKey === 'mix') ? keys[Math.floor(Math.random() * keys.length)] : (typeKey || 'sakura');
+        
+        petal.innerHTML = svgFlowerTemplates[selectedType] || svgFlowerTemplates.sakura;
 
         document.body.appendChild(petal);
-        setTimeout(() => petal.remove(), 5000);
+        setTimeout(() => petal.remove(), 6000);
+      }
+    }
+
+    /* 10. FLOATING BUTTERFLIES IN BACKGROUND */
+    function initButterflies() {
+      const butterflyEmojis = ['🦋', '🌸', '✨', '🦋', '💖'];
+      for (let i = 0; i < 5; i++) {
+        const bf = document.createElement('div');
+        bf.className = 'butterfly';
+        bf.innerText = butterflyEmojis[i % butterflyEmojis.length];
+        bf.style.left = (Math.random() * 85 + 5) + 'vw';
+        bf.style.top = (Math.random() * 80 + 10) + 'vh';
+        bf.style.animationDelay = (Math.random() * 5) + 's';
+        bf.style.animationDuration = (Math.random() * 4 + 7) + 's';
+        document.body.appendChild(bf);
       }
     }
 
@@ -722,7 +766,7 @@
       sections.forEach(sec => petalObserver.observe(sec));
     }
 
-    /* 10. CANVAS SPARKLES & FLOATING HEARTS ALWAYS */
+    /* 11. CANVAS SPARKLES & FLOATING HEARTS ALWAYS */
     const canvas = document.getElementById('heartCanvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
@@ -757,7 +801,7 @@
     }
     animateParticles();
 
-    /* 11. MODAL UTILS */
+    /* 12. MODAL UTILS */
     function showModal(title, bodyHtml) {
       document.getElementById('modalTitle').innerHTML = title;
       document.getElementById('modalBody').innerHTML = bodyHtml;
@@ -765,7 +809,7 @@
     }
     function closeModal() { document.getElementById('popupModal').style.display = 'none'; }
 
-    /* 12. CINEMATIC ENDING FIREWORKS */
+    /* 13. CINEMATIC ENDING FIREWORKS */
     let confettiTriggered = false;
     window.addEventListener('scroll', () => {
       const footer = document.getElementById('footerSection');
