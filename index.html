@@ -177,13 +177,14 @@
 
   <!-- NATIVE AUDIO PLAYER (BYPASSES MOBILES' AUTOPLAY BLOCK) -->
   <div class="music-container">
-    <span style="font-size: 1.2rem;">🎵</span>
-    <audio id="bgMusic" controls loop preload="auto" playsinline>
-      <source src="lover.mp3" type="audio/mpeg">
-      <source src="./lover.mp3" type="audio/mpeg">
-      <source src="Taylor_Swift_-_Lover_(mp3.pm).mp3" type="audio/mpeg">
-    </audio>
-  </div>
+  <span style="font-size: 1.2rem;">🎵</span>
+  <audio id="bgMusic" controls loop preload="auto" playsinline>
+    <!-- Direct public CDN link for Lover -->
+    <source src="https://ia801503.us.archive.org/15/items/taylor-swift-lover-album/03%20Lover.mp3" type="audio/mpeg">
+    <!-- Local fallbacks -->
+    <source src="lover.mp3" type="audio/mpeg">
+  </audio>
+</div>
 
   <div id="loader">
     <div class="envelope-wrapper" id="envelopeBtn">
