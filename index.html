@@ -313,12 +313,11 @@
 
     loadAllImages();
 
-    /* 2. AUDIO PLAYBACK VIA DIRECT GITHUB RAW LINK */
+    /* 2. DIRECT LOCAL AUDIO PLAYBACK */
     const musicBtn = document.getElementById("musicToggle");
     const loader = document.getElementById("loader");
 
-    // Sourced directly from your GitHub repository raw media file
-    const music = new Audio("https://raw.githubusercontent.com/iphonestorage2024001-hub/HK_2_Try/main/lover.mp3");
+    const music = new Audio("./lover.mp3");
     music.loop = true;
 
     let opened = false;
