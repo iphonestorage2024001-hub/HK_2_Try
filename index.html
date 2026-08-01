@@ -5,9 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>For Haru ❤️ | Happy Girlfriend Day</title>
   
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  <!-- Canvas Confetti Library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
@@ -46,15 +49,6 @@
       pointer-events: none; z-index: 1;
     }
 
-    .music-btn {
-      position: fixed; top: 20px; right: 20px; z-index: 1000;
-      background: var(--glass-bg); backdrop-filter: blur(10px);
-      border: 1px solid var(--glass-border); padding: 12px 20px;
-      border-radius: 50px; cursor: pointer; font-weight: 600;
-      color: var(--deep-rose); box-shadow: var(--shadow-romantic);
-      display: flex; align-items: center; gap: 8px; border: none;
-    }
-
     #loader {
       position: fixed; inset: 0;
       background: linear-gradient(135deg, #fbcfe8, #e9d5ff);
@@ -71,6 +65,13 @@
 
     .envelope-icon { font-size: 4rem; margin-bottom: 15px; animation: pulse 2s infinite; }
     @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+
+    .spotify-card {
+      max-width: 420px; width: 100%; margin: 25px auto 10px auto;
+      background: var(--glass-bg); backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border); border-radius: 20px;
+      padding: 10px; box-shadow: var(--shadow-romantic);
+    }
 
     .hero {
       position: relative; min-height: 100vh; display: flex;
@@ -159,8 +160,6 @@
 
   <canvas id="heartCanvas"></canvas>
 
-  <button class="music-btn" id="musicToggle">🎵</button>
-
   <div id="loader">
     <div class="envelope-wrapper">
       <div class="envelope-icon">💌</div>
@@ -179,6 +178,21 @@
         <p style="font-size: 1.1rem; color: #701a75; margin-top: 15px;">
           "Can I go where you go? Can we always be this close forever and ever?"
         </p>
+
+        <!-- SPOTIFY EMBEDDED PLAYER -->
+        <div class="spotify-card">
+          <iframe 
+            style="border-radius:12px;" 
+            src="https://open.spotify.com/embed/track/1dGr1A88c922P3mI8L2Z3B?utm_source=generator&theme=0" 
+            width="100%" 
+            height="152" 
+            frameBorder="0" 
+            allowfullscreen="" 
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+            loading="lazy">
+          </iframe>
+        </div>
+
         <a href="#memories" class="btn-romantic">Begin Our Story ❤️</a>
       </div>
     </section>
@@ -310,25 +324,13 @@
 
     loadAllImages();
 
-    /* 2. STRICT OFFLINE AUDIO PLAYBACK */
-    const musicBtn = document.getElementById("musicToggle");
+    /* 2. LOADER OPEN LOGIC */
     const loader = document.getElementById("loader");
-
-    // Local relative file reference
-    const music = new Audio("./lover.mp3");
-    music.loop = true;
-
     let opened = false;
 
     function openWebsite() {
       if (opened) return;
       opened = true;
-
-      music.play().then(() => {
-        musicBtn.innerHTML = "⏸";
-      }).catch((e) => {
-        console.log("Offline Audio Error:", e);
-      });
 
       loader.style.transition = "opacity 1s ease";
       loader.style.opacity = "0";
@@ -342,17 +344,6 @@
 
     loader.addEventListener("click", openWebsite);
     loader.addEventListener("touchstart", openWebsite, { passive: true });
-
-    musicBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      if (music.paused) {
-        music.play();
-        musicBtn.innerHTML = "⏸";
-      } else {
-        music.pause();
-        musicBtn.innerHTML = "🎵";
-      }
-    });
 
     /* 3. SLIDESHOW TIMER */
     function initSlideshow() {
