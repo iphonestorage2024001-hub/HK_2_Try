@@ -114,11 +114,66 @@
     .polaroid img { width: 100%; height: 220px; object-fit: cover; border-radius: 2px; }
     .polaroid-caption { text-align: center; font-family: 'Dancing Script', cursive; font-size: 1.4rem; margin-top: 15px; }
 
-    .love-cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-    .love-card {
-      background: var(--glass-bg); backdrop-filter: blur(10px);
-      border: 1px solid var(--glass-border); border-radius: 20px; padding: 30px; text-align: center;
+    /* --- 3D FLIP CARDS STYLING --- */
+    .love-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      perspective: 1000px;
     }
+
+    .flip-card {
+      background-color: transparent;
+      height: 220px;
+      cursor: pointer;
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 20px;
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-shadow: var(--shadow-romantic);
+      border: 1px solid var(--glass-border);
+    }
+
+    .flip-card-front {
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+    }
+
+    .flip-card-front .icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .flip-card-front h3 { font-size: 1.4rem; color: #4a044e; }
+    .flip-hint { margin-top: 10px; font-size: 0.8rem; color: var(--deep-rose); opacity: 0.8; }
+
+    .flip-card-back {
+      background: linear-gradient(135deg, rgba(244, 114, 182, 0.85), rgba(192, 132, 252, 0.85));
+      backdrop-filter: blur(12px);
+      color: white;
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-back p { font-size: 1rem; line-height: 1.5; font-weight: 500; }
 
     .letter-box {
       background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px);
@@ -131,15 +186,6 @@
       border-radius: 30px; padding: 60px 30px; text-align: center;
       border: 1px solid rgba(192, 132, 252, 0.5); margin: 40px auto;
     }
-
-    .timeline-item { display: flex; flex-direction: column; margin-bottom: 50px; gap: 20px; }
-    @media(min-width: 768px) {
-      .timeline-item { flex-direction: row; align-items: center; }
-      .timeline-item:nth-child(even) { flex-direction: row-reverse; }
-    }
-    .timeline-img { flex: 1; border-radius: 20px; overflow: hidden; }
-    .timeline-img img { width: 100%; height: 280px; object-fit: cover; display: block; }
-    .timeline-content { flex: 1; background: var(--glass-bg); padding: 30px; border-radius: 20px; }
 
     .gift-game { text-align: center; padding: 40px 20px; }
     .gift-box { font-size: 5rem; cursor: pointer; display: inline-block; animation: bounce 2s infinite; }
@@ -200,19 +246,96 @@
       <div class="polaroid-grid" id="polaroidGrid"></div>
     </section>
 
+    <!-- FLIP CARDS SECTION -->
     <section>
       <h2 class="section-title">Things I Love About You 💖</h2>
+      <p style="text-align: center; margin-top: -30px; margin-bottom: 30px; color: #701a75;">Tap each card to reveal why you mean so much to me ✨</p>
+      
       <div class="love-cards-grid">
-        <div class="love-card"><div class="icon">❤️</div><h3>Your Smile</h3><p>It lights up my darkest days.</p></div>
-        <div class="love-card"><div class="icon">🌸</div><h3>Your Kindness</h3><p>The gentle way you care for everyone.</p></div>
-        <div class="love-card"><div class="icon">✨</div><h3>Your Eyes</h3><p>I could get lost in them forever.</p></div>
-        <div class="love-card"><div class="icon">😂</div><h3>Your Laugh</h3><p>My absolute favorite sound in the world.</p></div>
-        <div class="love-card"><div class="icon">💖</div><h3>Your Heart</h3><p>So genuine, loving, and precious.</p></div>
-        <div class="love-card"><div class="icon">🌹</div><h3>Everything</h3><p>Every single thing that makes you... You.</p></div>
+        
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="icon">🧠</div>
+              <h3>Emotional Intelligence</h3>
+              <div class="flip-hint">Tap to flip ➔</div>
+            </div>
+            <div class="flip-card-back">
+              <p>The deep, intuitive way you understand feelings and bring calm clarity to every conversation.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="icon">🌸</div>
+              <h3>Kindness</h3>
+              <div class="flip-hint">Tap to flip ➔</div>
+            </div>
+            <div class="flip-card-back">
+              <p>The soft, effortless grace with which you care for the people and world around you.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="icon">🤝</div>
+              <h3>Humanity</h3>
+              <div class="flip-hint">Tap to flip ➔</div>
+            </div>
+            <div class="flip-card-back">
+              <p>Your genuine compassion, humility, and the grounded way you stay true to yourself.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="icon">✨</div>
+              <h3>Grace & Poise</h3>
+              <div class="flip-hint">Tap to flip ➔</div>
+            </div>
+            <div class="flip-card-back">
+              <p>How effortlessly you carry elegance, warmth, and strength in everything you do.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="icon">🤗</div>
+              <h3>Warmth & Empathy</h3>
+              <div class="flip-hint">Tap to flip ➔</div>
+            </div>
+            <div class="flip-card-back">
+              <p>Your heart makes everyone feel safe, heard, valued, and genuinely loved.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="icon">💎</div>
+              <h3>Pure Soul</h3>
+              <div class="flip-hint">Tap to flip ➔</div>
+            </div>
+            <div class="flip-card-back">
+              <p>Simply put: there is no one else like you. You are my favorite person in the world.</p>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
-    <section>
+    <!-- AUTO-TYPING LETTER SECTION -->
+    <section id="letterSection">
       <h2 class="section-title cursive">A Letter For My Princess 💌</h2>
       <div class="letter-box"><div id="typewriterText"></div></div>
     </section>
@@ -223,11 +346,6 @@
         <p class="swift-quote">"Ladies and gentlemen, will you please stand?<br>With every guitar string scar on my hand...<br>I take this magnetic force of a man to be my lover."</p>
         <p style="font-weight: 600; color: #7e22ce;">— Lover, Taylor Swift</p>
       </div>
-    </section>
-
-    <section>
-      <h2 class="section-title">Our Story Timeline 📖</h2>
-      <div class="timeline" id="timelineContainer"></div>
     </section>
 
     <section class="gift-game">
@@ -299,25 +417,6 @@
           </div>
         `;
       });
-
-      const timeline = document.getElementById('timelineContainer');
-      timeline.innerHTML = '';
-      const chapters = [
-        { title: "Chapter 1: Where It All Began", desc: "The day you entered my life, everything turned into full color." },
-        { title: "Chapter 2: Growing Closer", desc: "Late night conversations and endless laughter." },
-        { title: "Chapter 3: Here & Always", desc: "Building our world together, day by day." }
-      ];
-      images.slice(0, 3).forEach((img, i) => {
-        timeline.innerHTML += `
-          <div class="timeline-item">
-            <div class="timeline-img"><img src="${img}" alt="Timeline"></div>
-            <div class="timeline-content">
-              <h3 style="color: var(--deep-rose);">${chapters[i].title}</h3>
-              <p style="margin-top: 10px;">${chapters[i].desc}</p>
-            </div>
-          </div>
-        `;
-      });
     }
 
     loadAllImages();
@@ -336,7 +435,7 @@
       setTimeout(() => {
         loader.style.display = "none";
         document.getElementById("mainContent").style.display = "block";
-        startTypewriter();
+        initScrollObserver();
       }, 1000);
     }
 
@@ -356,17 +455,39 @@
       }
     }
 
-    /* 4. TYPEWRITER */
+    /* 4. AUTO-TYPE ON SCROLL OBSERVER */
     const letterText = `Dear Haru,\n\nFrom the moment you entered my life, everything got brighter, sweeter, and infinitely more beautiful. You bring so much light into my world just by being yourself.\n\nThank you for every shared laugh, every sweet text, every quiet moment, and every memory we've built together. You are my best friend, my safe place, and my favorite person.\n\nHappy Girlfriend Day, my princess. Here's to us, today and always.\n\nForever Yours,\nKshiteej ❤️`;
     let typeIndex = 0;
+    let typewriterStarted = false;
+
     function startTypewriter() {
+      if (typewriterStarted) return;
+      typewriterStarted = true;
+      
       const container = document.getElementById('typewriterText');
-      if (typeIndex < letterText.length) {
-        let char = letterText.charAt(typeIndex);
-        container.innerHTML += (char === '\n') ? '<br>' : char;
-        typeIndex++;
-        setTimeout(startTypewriter, 35);
+      function type() {
+        if (typeIndex < letterText.length) {
+          let char = letterText.charAt(typeIndex);
+          container.innerHTML += (char === '\n') ? '<br>' : char;
+          typeIndex++;
+          setTimeout(type, 35);
+        }
       }
+      type();
+    }
+
+    function initScrollObserver() {
+      const letterSection = document.getElementById('letterSection');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            startTypewriter();
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+
+      if (letterSection) observer.observe(letterSection);
     }
 
     /* 5. CANVAS SPARKLES */
