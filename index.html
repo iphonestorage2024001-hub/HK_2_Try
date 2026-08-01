@@ -391,7 +391,7 @@
     }
 
     /* 4. TYPEWRITER */
-    const letterText = `Dear Haru,\n\nFrom the moment you entered my life, everything got brighter, sweeter, and infinitely more beautiful. You bring so much light into my world just by being you[...]`
+    const letterText = `Dear Haru,\n\nFrom the moment you entered my life, everything got brighter, sweeter, and infinitely more beautiful. You bring so much light into my world just by being you...`;
     let typeIndex = 0;
     function startTypewriter() {
       const container = document.getElementById('typewriterText');
@@ -478,12 +478,11 @@
     });
   </script>
   <script>
-    // ... all your other script code ...
-
-    // 🎵 INDEPENDENT AUDIO LOADER (uses lover.mp3 in repo root)
-    const bgMusic = new Audio("./lover.mp3");
-    bgMusic.loop = true;
-    window.addEventListener("pointerdown", () => { bgMusic.play().catch(() => {}); }, { once: true });
+    // Ensure a user gesture primes the already-present audio element
+    window.addEventListener("pointerdown", () => {
+      const audioEl = document.getElementById('bgMusic');
+      if (audioEl) audioEl.play().catch(() => {});
+    }, { once: true });
   </script>
 </body>
 </html>
