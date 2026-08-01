@@ -8,7 +8,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet[...]">
   
   <!-- Canvas Confetti Library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -171,6 +171,15 @@
   <button class="music-btn" id="musicToggle" onclick="toggleAudio()">
     <span id="musicIcon">🎵</span> <span id="musicText">Play Lover</span>
   </button>
+
+  <!-- Download / Direct link for lover.mp3 -->
+  <a id="loverLink" href="./lover.mp3" download
+     style="position: fixed; top: 20px; right: 120px; z-index:1000;
+            background: rgba(255,255,255,0.45); backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.65); padding: 10px 14px;
+            border-radius: 40px; text-decoration: none; color: #db2777; font-weight:600;">
+    ⤓ Download Lover
+  </a>
 
   <div id="loader">
     <div class="envelope-wrapper" id="envelopeBtn">
@@ -382,7 +391,7 @@
     }
 
     /* 4. TYPEWRITER */
-    const letterText = `Dear Haru,\n\nFrom the moment you entered my life, everything got brighter, sweeter, and infinitely more beautiful. You bring so much light into my world just by being yourself.\n\nThank you for every shared laugh, every sweet text, every quiet moment, and every memory we've built together. You are my best friend, my safe place, and my favorite person.\n\nHappy Girlfriend Day, my princess. Here's to us, today and always.\n\nForever Yours,\nKshiteej ❤️`;
+    const letterText = `Dear Haru,\n\nFrom the moment you entered my life, everything got brighter, sweeter, and infinitely more beautiful. You bring so much light into my world just by being you[...]`
     let typeIndex = 0;
     function startTypewriter() {
       const container = document.getElementById('typewriterText');
@@ -471,13 +480,10 @@
   <script>
     // ... all your other script code ...
 
-    // 🎵 INDEPENDENT AUDIO LOADER
-    const bgMusic = new Audio("./Taylor_Swift_-_Lover_(mp3.pm).mp3");
+    // 🎵 INDEPENDENT AUDIO LOADER (uses lover.mp3 in repo root)
+    const bgMusic = new Audio("./lover.mp3");
     bgMusic.loop = true;
     window.addEventListener("pointerdown", () => { bgMusic.play().catch(() => {}); }, { once: true });
   </script>
-</body>
-</html>
-
 </body>
 </html>
