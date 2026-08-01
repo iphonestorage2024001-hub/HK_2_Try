@@ -66,11 +66,10 @@
     .envelope-icon { font-size: 4rem; margin-bottom: 15px; animation: pulse 2s infinite; }
     @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-    .spotify-card {
+    .music-card {
       max-width: 420px; width: 100%; margin: 25px auto 10px auto;
-      background: var(--glass-bg); backdrop-filter: blur(12px);
-      border: 1px solid var(--glass-border); border-radius: 20px;
-      padding: 10px; box-shadow: var(--shadow-romantic);
+      border-radius: 20px; overflow: hidden;
+      box-shadow: var(--shadow-romantic); border: 1px solid var(--glass-border);
     }
 
     .hero {
@@ -179,17 +178,16 @@
           "Can I go where you go? Can we always be this close forever and ever?"
         </p>
 
-        <!-- SPOTIFY EMBEDDED PLAYER -->
-        <div class="spotify-card">
+        <!-- YOUTUBE MUSIC PLAYER EMBED -->
+        <div class="music-card">
           <iframe 
-            style="border-radius:12px;" 
-            src="https://open.spotify.com/embed/track/1dGr1A88c922P3mI8L2Z3B" 
             width="100%" 
-            height="152" 
-            frameBorder="0" 
-            allowfullscreen="" 
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-            loading="lazy">
+            height="180" 
+            src="https://www.youtube.com/embed/-BjZmE2gtdo?enablejsapi=1&rel=0" 
+            title="Taylor Swift - Lover" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
           </iframe>
         </div>
 
