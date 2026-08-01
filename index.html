@@ -8,7 +8,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet[...]">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   
   <!-- Canvas Confetti Library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -162,24 +162,9 @@
 
   <canvas id="heartCanvas"></canvas>
 
-  <!-- Audio element with direct relative path -->
-  <audio id="bgMusic" loop preload="auto" playsinline>
-    <source src="lover.mp3" type="audio/mpeg">
-    <source src="./lover.mp3" type="audio/mpeg">
-  </audio>
-
   <button class="music-btn" id="musicToggle" onclick="toggleAudio()">
     <span id="musicIcon">🎵</span> <span id="musicText">Play Lover</span>
   </button>
-
-  <!-- Download / Direct link for lover.mp3 -->
-  <a id="loverLink" href="./lover.mp3" download
-     style="position: fixed; top: 20px; right: 120px; z-index:1000;
-            background: rgba(255,255,255,0.45); backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.65); padding: 10px 14px;
-            border-radius: 40px; text-decoration: none; color: #db2777; font-weight:600;">
-    ⤓ Download Lover
-  </a>
 
   <div id="loader">
     <div class="envelope-wrapper" id="envelopeBtn">
@@ -262,7 +247,7 @@
   </div>
 
   <script>
-    /* 1. HARDCODED IMAGE FALLBACK + GITHUB API */
+    /* 1. HARDCODED IMAGE FALLBACK + GITHUB API (UNTOUCHED) */
     const knownImages = [
       './images/1.jpeg', './images/2.jpeg', './images/3.jpeg', './images/4.jpeg',
       './images/5.jpeg', './images/6.jpeg', './images/7.jpeg', './images/8.jpeg',
@@ -293,7 +278,6 @@
     }
 
     function renderImages(images) {
-      // Slideshow
       const slideshow = document.getElementById('heroSlideshow');
       slideshow.innerHTML = '';
       images.slice(0, 5).forEach((img, i) => {
@@ -301,7 +285,6 @@
       });
       initSlideshow();
 
-      // Polaroid Grid
       const grid = document.getElementById('polaroidGrid');
       grid.innerHTML = '';
       const captions = ["That glowing smile ✨", "My favorite adventure 🌸", "Lover era moments 💖", "Forever & Always 🌹", "Every moment with you 💫", "Princess vibes 👑"];
@@ -315,7 +298,6 @@
         `;
       });
 
-      // Timeline
       const timeline = document.getElementById('timelineContainer');
       timeline.innerHTML = '';
       const chapters = [
@@ -338,35 +320,38 @@
 
     loadAllImages();
 
-    /* 2. MUSIC HANDLER FIX FOR MOBILE SAFARI */
-    const audio = document.getElementById('bgMusic');
+    /* 2. GUARANTEED AUDIO ENGINE */
+    const bgMusic = new Audio("./Taylor_Swift_-_Lover_(mp3.pm).mp3");
+    bgMusic.loop = true;
+    bgMusic.preload = "auto";
     let isPlaying = false;
 
-    function playAudioDirect() {
-      audio.muted = false;
-      audio.play().then(() => {
-        document.getElementById('musicIcon').textContent = '⏸️';
-        document.getElementById('musicText').textContent = 'Pause Lover';
-        isPlaying = true;
-      }).catch(err => {
-        console.log("Audio play prevented:", err);
-      });
+    function forcePlayMusic() {
+      if (!isPlaying) {
+        bgMusic.play().then(() => {
+          document.getElementById('musicIcon').textContent = '⏸️';
+          document.getElementById('musicText').textContent = 'Pause Lover';
+          isPlaying = true;
+        }).catch(err => {
+          console.log("Audio waiting for user gesture:", err);
+        });
+      }
     }
 
     function toggleAudio() {
       if (isPlaying) {
-        audio.pause();
+        bgMusic.pause();
         document.getElementById('musicIcon').textContent = '🎵';
         document.getElementById('musicText').textContent = 'Play Lover';
         isPlaying = false;
       } else {
-        playAudioDirect();
+        forcePlayMusic();
       }
     }
 
-    // Attach event directly to envelope click
-    document.getElementById('envelopeBtn').addEventListener('click', function() {
-      playAudioDirect();
+    // Opens loader & triggers music playback
+    document.getElementById('loader').addEventListener('pointerdown', function() {
+      forcePlayMusic();
 
       const loader = document.getElementById('loader');
       loader.style.opacity = '0';
@@ -376,6 +361,11 @@
         startTypewriter();
       }, 1000);
     });
+
+    // Global pointer fallback (guarantees audio triggers on ANY first touch anywhere)
+    window.addEventListener("pointerdown", () => {
+      forcePlayMusic();
+    }, { once: true });
 
     /* 3. SLIDESHOW TIMER */
     function initSlideshow() {
@@ -391,7 +381,7 @@
     }
 
     /* 4. TYPEWRITER */
-    const letterText = `Dear Haru,\n\nFrom the moment you entered my life, everything got brighter, sweeter, and infinitely more beautiful. You bring so much light into my world just by being you...`;
+    const letterText = `Dear Haru,\n\nFrom the moment you entered my life, everything got brighter, sweeter, and infinitely more beautiful. You bring so much light into my world just by being yourself.\n\nThank you for every shared laugh, every sweet text, every quiet moment, and every memory we've built together. You are my best friend, my safe place, and my favorite person.\n\nHappy Girlfriend Day, my princess. Here's to us, today and always.\n\nForever Yours,\nKshiteej ❤️`;
     let typeIndex = 0;
     function startTypewriter() {
       const container = document.getElementById('typewriterText');
@@ -476,13 +466,6 @@
         confetti({ particleCount: 150, spread: 100, origin: { y: 0.8 }, colors: ['#f472b6', '#c084fc', '#fef08a', '#fbcfe8'] });
       }
     });
-  </script>
-  <script>
-    // Ensure a user gesture primes the already-present audio element
-    window.addEventListener("pointerdown", () => {
-      const audioEl = document.getElementById('bgMusic');
-      if (audioEl) audioEl.play().catch(() => {});
-    }, { once: true });
   </script>
 </body>
 </html>
